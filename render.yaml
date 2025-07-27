@@ -1,0 +1,11 @@
+# render.yaml
+services:
+  - type: web
+    name: go-smtp-service
+    env: go
+
+    startCommand: "go run main.go"
+
+    envVars:
+      - key: GO_VERSION
+        value: "1.24.5"
