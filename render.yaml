@@ -1,11 +1,17 @@
-# render.yaml
+
 services:
   - type: web
-    name: go-smtp-service
+    name: mehmetemreok-api
     env: go
+    plan: free
+    
+    
+    buildCommand: "go build -o app"
+    
+    
+    startCommand: "./app"
 
-    startCommand: "go run main.go"
-
+    
     envVars:
       - key: GO_VERSION
-        value: "1.24.5"
+        value: "1.24.5" 
