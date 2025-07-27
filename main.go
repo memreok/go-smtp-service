@@ -33,7 +33,6 @@ func corsMiddleware(next http.Handler) http.Handler {
 }
 
 func contactHandler(w http.ResponseWriter, r *http.Request) {
-
 	if r.Method != http.MethodPost {
 		http.Error(w, "Desteklenmeyen metot", http.StatusMethodNotAllowed)
 		return
@@ -65,7 +64,6 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func sendEmail(form ContactForm) error {
-
 	to := os.Getenv("SMTP_TO_EMAIL")
 	host := os.Getenv("SMTP_HOST")
 	port := os.Getenv("SMTP_PORT")
@@ -88,18 +86,20 @@ func sendEmail(form ContactForm) error {
 }
 
 func main() {
-
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("Uyarı: .env dosyası bulunamadı.")
 	}
 
 	handler := corsMiddleware(http.HandlerFunc(contactHandler))
-
 	http.Handle("/api/contact", handler)
 
-	port := "8080"
-	log.Printf("Sunucu http://localhost:%s adresinde başlatılıyor...", port)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	log.Printf("Sunucu %s portunda başlatılıyor...", port)
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		log.Fatalf("Sunucu başlatılamadı: %v", err)
 	}
